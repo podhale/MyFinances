@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "MyFinances"
+    }
+  },
+  "defaultProject": "MyFinances",
+  "cli": {
+    "analytics": false
+  }
 }
