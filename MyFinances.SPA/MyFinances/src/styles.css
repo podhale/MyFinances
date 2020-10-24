@@ -1,1 +1,48 @@
-/* You can add global styles to this file, and also import other style files */
+html,body {
+    margin: 0;
+    padding: 0;
+}
+
+.form-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(243.91deg, #E5E5E5 0.9%, #FFFFFF 99.16%);
+}
+
+.form-card {
+    background-color: white;
+    width: 28em;
+    height: 34em;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.45);
+    border-radius: 1em;
+    border-top: .5em solid #357767 ;
+}
+
+.header-title {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2em;
+    top: 2em;
+    bottom: 1em;
+    line-height: 42px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    position: relative;
+    font-weight: 700;
+    width: 100%;
+    margin: auto;
+    color: #357767;
+}
+
+@media screen and (max-width: 600px) {
+    .form-card {
+        position: absolute;
+        width: 80%;
+        height: 80%;
+    }
+  }
