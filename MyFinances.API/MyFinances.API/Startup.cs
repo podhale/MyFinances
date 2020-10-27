@@ -64,9 +64,14 @@ namespace MyFinances.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
 
+            app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(builder => builder
+             .AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {

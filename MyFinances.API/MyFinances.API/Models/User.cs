@@ -9,7 +9,6 @@ namespace MyFinances.API.Models
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-        public ClaimsIdentity Username { get; internal set; }
 
         public User()
         {

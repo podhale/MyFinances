@@ -1,4 +1,5 @@
 <div class="form-background">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
   <div class="form-card">
     <div class="header-title">
       LOGOWANIE
@@ -6,7 +7,7 @@
     <div class="group-input auth-form margin-top">
       <div class="field">
         <div class="control">
-          <input type="text" class="input-text" placeholder=" " autocomplete="off">
+          <input type="text" class="input-text" formControlName="email" placeholder=" " autocomplete="off">
           <label>Email</label>
         </div>
       </div>
@@ -15,7 +16,7 @@
     <div class="group-input auth-form">
       <div class="field">
         <div class="control">
-          <input type="password" class="input-text" placeholder=" " autocomplete="off">
+          <input type="password" formControlName="password" class="input-text" placeholder=" " autocomplete="off">
           <label>Hasło</label>
         </div>
       </div>
@@ -28,9 +29,11 @@
     </div>
     
     <div class="row button-group">
-      <input type="button" class="button-second btn-mf" value="rejestracja">
-      <input type="button" class="button-first btn-mf" value="zaloguj">
+      <input type="button" class="button-second btn-mf" [routerLink]="['/register']" value="rejestracja">
+      <input type="submit" class="button-first btn-mf" value="zaloguj">
     </div>
     
   </div>
+
+</form>
 </div>

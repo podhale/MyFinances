@@ -46,3 +46,7 @@ html,body {
         height: 80%;
     }
   }
+
+  .alertify-notifier {
+      z-index: 1002;
+  }

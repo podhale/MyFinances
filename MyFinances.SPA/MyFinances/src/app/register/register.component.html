@@ -3,12 +3,13 @@
     <div class="header-title">
       REJESTRACJA
     </div>
-    <form autocomplete="off">
+    <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
     <div class="group-input auth-form margin-top">
       <div class="field">
         <div class="control">
-          <input type="text"  #userEmail name="userEmail" class="input-text" placeholder=" " autocomplete="false" />
-          <label>Email</label>
+          <input type="text"  formControlName="email"
+          [ngClass]="{'is-invalid': registerForm.get('email').errors && registerForm.get('email').touched}" class="input-text" placeholder=" " autocomplete="false" />
+          <label>Email</label> <div class="invalid-feedback">Podaj nazwę użytkownika</div>
         </div>
       </div>
     </div>
@@ -16,8 +17,21 @@
     <div class="group-input auth-form">
       <div class="field">
         <div class="control">
-          <input type="password" class="input-text" placeholder=" " autocomplete="new-password"/>
+          <input type="password" class="input-text" formControlName="password"
+          [ngClass]="{'is-invalid': registerForm.get('password').errors && registerForm.get('password').touched}" placeholder=" " autocomplete="new-password"/>
           <label>Hasło</label>
+          <div class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">
+      Hasło jest wymagane
+    </div>
+    <div class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">
+      Hasło nie może mieć mniej niż 6 znaków!
+    </div>
+    <div class="invalid-feedback"
+      *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched">
+      Hasło nie może mieć Więcej niż 12 znaków!
+    </div>
         </div>
       </div>
     </div>
@@ -26,15 +40,25 @@
     <div class="group-input auth-form">
       <div class="field">
         <div class="control">
-          <input type="password" class="input-text" placeholder=" "  autocomplete="off">
+          <input type="password" class="input-text"  formControlName="confirmPassword"
+          [ngClass]="{'is-invalid': registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').touched
+                                 || registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')}" placeholder=" "  autocomplete="off">
           <label>Powtórz hasło</label>
+          <div class="invalid-feedback"
+          *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched">
+          Hasło jest wymagane
+        </div>
+        <div class="invalid-feedback"
+          *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword').touched">
+          Hasło nie pasują do siebie.
+        </div>
         </div>
       </div>
     </div>
     
     <div class="row button-group">
-      <input type="button" class="button-second btn-mf" value="logowanie">
-      <input type="button" class="button-first btn-mf" value="zarejestruj">
+      <input type="button" class="button-second btn-mf" [routerLink]="['/login']"  value="logowanie">
+      <input type="submit" class="button-first btn-mf"  value="zarejestruj">
     </div>
   </form>
   </div>

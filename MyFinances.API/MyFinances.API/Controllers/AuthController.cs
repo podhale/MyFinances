@@ -28,14 +28,14 @@ namespace MyFinances.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
         {
-            userForRegister.Username = userForRegister.Username.ToLower();
+            userForRegister.Email = userForRegister.Email.ToLower();
 
-            if (await _authRepository.UserExist(userForRegister.Username))
+            if (await _authRepository.UserExist(userForRegister.Email))
             {
                 return BadRequest("Użytkownik istnieje!");
             }
 
-            User user = new User();
+            User user = new User(userForRegister.Email);
             User createdUser = await _authRepository.Register(user, userForRegister.Password);
 
             return StatusCode(201);
@@ -44,7 +44,7 @@ namespace MyFinances.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
-            User userFromRepo = await _authRepository.Login(userForLogin.Username.ToLower(), userForLogin.Password);
+            User userFromRepo = await _authRepository.Login(userForLogin.Email.ToLower(), userForLogin.Password);
 
             if (userFromRepo == null) return Unauthorized();
 
@@ -52,7 +52,7 @@ namespace MyFinances.API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim("user", userFromRepo.Username.ToString())
+                new Claim("user", userFromRepo.Email.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));

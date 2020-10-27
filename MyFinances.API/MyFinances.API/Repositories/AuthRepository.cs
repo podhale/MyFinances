@@ -44,9 +44,12 @@ namespace MyFinances.API.Repositories
             return user;
         }
 
-        public Task<bool> UserExist(string email)
+        public async Task<bool> UserExist(string email)
         {
-            throw new System.NotImplementedException();
+            if (await _context.Users.AnyAsync(x => x.Email == email))
+                return true;
+
+            return false;
         }
 
         #region private 
