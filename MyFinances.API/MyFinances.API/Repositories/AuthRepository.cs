@@ -30,9 +30,18 @@ namespace MyFinances.API.Repositories
 
         }
 
-        public Task<User> Regiser(User user, string password)
+        public async Task<User> Register(User user, string password)
         {
-            throw new System.NotImplementedException();
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHashSalt(password, out passwordHash, out passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            return user;
         }
 
         public Task<bool> UserExist(string email)
@@ -41,6 +50,17 @@ namespace MyFinances.API.Repositories
         }
 
         #region private 
+
+        private void CreatePasswordHashSalt(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+            }
+
+        }
+
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] paswordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512(paswordSalt))

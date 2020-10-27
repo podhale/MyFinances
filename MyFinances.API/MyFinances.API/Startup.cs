@@ -14,6 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MyFinances.API.Data;
+using MyFinances.API.Interfaces;
+using MyFinances.API.Repositories;
+using AutoMapper;
 
 namespace MyFinances.API
 {
@@ -37,6 +40,7 @@ namespace MyFinances.API
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -48,6 +52,8 @@ namespace MyFinances.API
                         ValidateAudience = false
                     };
                 });
+
+            services.AddScoped<IAuthRepository, AuthRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
