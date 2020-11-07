@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
               private alertify: AlertifyService) { }
 
   ngOnInit(): void {
+    this.authService.redirectToHomeIfLogged();
     this.createRegisterForm();
   }
 

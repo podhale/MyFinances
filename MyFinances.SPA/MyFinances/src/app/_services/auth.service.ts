@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { AlertifyService } from './alertify.service';
 import { User } from '../_model/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,14 @@ export class AuthService {
   decodedToken: any;
 
   constructor(private http: HttpClient,
-              private alertify: AlertifyService) { }
+              private alertify: AlertifyService,
+              private router: Router) { }
 
   login(model: any): any {
     return this.http.post(environment.authUrl + '/login', model).pipe(map((respone: any) => {
-      const user = respone;
-      if (user) {
-        localStorage.setItem('token', user.token);
-        this.decodedToken = this.jwtHelper.decodeToken(user.token);
+      if (respone) {
+        localStorage.setItem('token', respone.token);
+        this.decodedToken = this.jwtHelper.decodeToken(respone.token);
       }
     }));
   }
@@ -34,5 +35,11 @@ export class AuthService {
   loggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  redirectToHomeIfLogged(): void {
+    if (this.loggedIn()) {
+      this.router.navigate(['home']);
+    }
   }
 }

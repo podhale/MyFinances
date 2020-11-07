@@ -2,27 +2,13 @@
     position: relative;
     margin-top: 20px;
   }
-  input[type="text"]:focus ~ label,
-  input[type="text"]:not(:placeholder-shown) ~ label {
-    top: -15px;
-    font-size: 15px;
-    left: 0px;
-    font-weight: 700;
-  }
-  input[type="password"]:focus ~ label,
-  input[type="password"]:not(:placeholder-shown) ~ label {
-    top: -15px;
-    font-size: 15px;
-    left: 0px;
-    font-weight: 700;
-  }
   label {
     position: absolute;
     pointer-events: none;
-    left: 10px;
-    top: 2px;
-    transition: 0.2s ease all;
-    font-size: 17px;
+    top: -15px;
+    left: 0px;
+    font-weight: 700;
+    font-size: 15px;
   }
   
   input[type="text"],
