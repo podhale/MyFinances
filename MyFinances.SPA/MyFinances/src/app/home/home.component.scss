@@ -19,6 +19,39 @@
 }
 
 .saldo-mf {
-    background: #0B99EB;
+    position: relative;
     border-radius: 10px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1em;
+    -webkit-box-shadow: 0px 4px 5px   rgba(0, 0, 0, 0.3);
+    -moz-box-shadow:0px 4px 5px   rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 5px   rgba(0, 0, 0, 0.3);
+}
+
+.saldo-desc {
+    margin-top:  .4em;
+    margin-left: .4em;
+    font-size: .9em;
+}
+.saldo-value {
+    margin-left: .4em;
+    margin-bottom: 1em;
+    bottom: 1em;
+    font-size: 1.5em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.saldo {
+    background: #0B99EB;
+
+}
+
+.intent-target {
+    background: #BF00CF;
+}
+
+.avail-res {
+    background: #FFA215;
 }

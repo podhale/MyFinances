@@ -55,3 +55,6 @@ html,body {
   .alertify-notifier {
       z-index: 1002;
   }
+  .pointer {
+    cursor: pointer;
+  }

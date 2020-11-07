@@ -1,6 +1,6 @@
 <div class="bs-example">
   <nav class="navbar navbar-expand-md navbar-light">
-    <div class="container-fluid">
+    <div class="container">
       <a href="#" class="navbar-brand nav-title">MOJE FINANSE
       </a>
       <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -16,7 +16,7 @@
           </div>
           <div class="navbar-nav ml-auto">
             <div *ngIf="loggedIn()" class="dropdown show" dropdown>
-              <a class="dropdown-toggle text-light" dropdownToggle>
+              <a  class="dropdown-toggle nav-item nav-link pointer" dropdownToggle>
                 Witaj {{ authService.decodedToken | titlecase }}
               </a>
         
