@@ -17,7 +17,7 @@
           <div class="navbar-nav ml-auto">
             <div *ngIf="loggedIn()" class="dropdown show" dropdown>
               <a  class="dropdown-toggle nav-item nav-link pointer" dropdownToggle>
-                Witaj {{ authService.decodedToken | titlecase }}
+                Witaj {{ authService.getUserName() | titlecase }}
               </a>
         
               <div class="dropdown-menu mt-4" *dropdownMenu>

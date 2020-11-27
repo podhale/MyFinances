@@ -32,6 +32,15 @@ export class AuthService {
     return this.http.post(environment.authUrl + '/register', model);
   }
 
+  getCurrentUserId(): string {
+    const token = this.jwtHelper.decodeToken(localStorage.getItem('token'));
+    return token.nameid;
+  }
+
+  getUserName(): string {
+    const token = this.jwtHelper.decodeToken(localStorage.getItem('token'));
+    return token.user;
+  }
   loggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);

@@ -3,27 +3,27 @@
     <div class="container-fluid">
 
       <div class="row col-md-12 header-mf">
-        KONTA
+        PODSUMOWANIE: OGÓLNE
       </div>
       <div class="row">
         <div class="col-md-4">
           <div class="saldo-mf saldo">
             <div class="saldo-desc">Saldo</div>
-            <div class="saldo-value">PLN 100000</div>
+            <div class="saldo-value"> {{saldo | number:'1.2'}} PLN</div>
           </div>
         </div>
         
         <div class="col-md-4">
           <div class="saldo-mf intent-target">
             <div class="saldo-desc">Środki przeznaczone na Cele</div>
-            <div class="saldo-value">PLN 100000</div>
+            <div class="saldo-value">{{saldo * 0.2 | number:'1.2'}} PLN</div>
           </div>
         </div>
         
         <div class="col-md-4">
           <div class="saldo-mf avail-res">
             <div class="saldo-desc">Dostępne środki</div>
-            <div class="saldo-value">PLN 100000</div>
+            <div class="saldo-value">{{saldo * 0.8 | number:'1.2'}} PLN</div>
           </div>
         </div>
       </div>
@@ -43,22 +43,22 @@
       <div class="row">
         <div class="col-md-4">
           <div class="saldo-mf saldo">
-            <div class="saldo-desc">Budżet miesięczny</div>
-            <div class="saldo-value">PLN 100000</div>
+            <div class="saldo-desc">Saldo miesięczne</div>
+            <div class="saldo-value">{{monthSaldo?.saldo | number:'1.2'}} PLN</div>
           </div>
         </div>
         
         <div class="col-md-4">
-          <div class="saldo-mf intent-target">
+          <div class="saldo-mf danger-mf">
             <div class="saldo-desc">Wydano</div>
-            <div class="saldo-value">PLN 100000</div>
+            <div class="saldo-value">{{monthSaldo?.expense | number:'1.2'}} PLN</div>
           </div>
         </div>
         
         <div class="col-md-4">
-          <div class="saldo-mf avail-res">
-            <div class="saldo-desc">Pozostało do wydania</div>
-            <div class="saldo-value">PLN 100000</div>
+          <div class="saldo-mf success-mf">
+            <div class="saldo-desc">Przychody</div>
+            <div class="saldo-value">{{monthSaldo?.income | number:'1.2'}} PLN</div>
           </div>
         </div>
       </div>
@@ -66,4 +66,14 @@
 
     </div>
   </div>
+
+  <div class="row container-fluid mt-5">
+    <div class="col-md-6">
+      <div class="section-mf"></div>
+    </div>
+    <div class="col-md-6">
+      <div class="section-mf float-right"></div>
+    </div>
+  </div>
 </div>
+

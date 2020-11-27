@@ -35,7 +35,6 @@ namespace MyFinances.API
             services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("myFinancesDB")));
             services.AddControllers();
-            services.AddCors();
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
@@ -54,6 +53,7 @@ namespace MyFinances.API
                 });
 
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IFinancesRepository, FinancesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
