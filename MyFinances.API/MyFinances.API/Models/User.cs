@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace MyFinances.API.Models
 {
@@ -10,10 +10,9 @@ namespace MyFinances.API.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public User()
-        {
-                
-        }
+        public virtual ICollection<Operation> Operations { get; set; }
+        public virtual ICollection<Category> Categories { get; set; }
+
         public User(string email)
         {
             Email = email;

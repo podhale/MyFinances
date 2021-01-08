@@ -36,7 +36,7 @@ namespace MyFinances.API.Controllers
             }
 
             User user = new User(userForRegister.Email);
-            User createdUser = await _authRepository.Register(user, userForRegister.Password);
+            await _authRepository.Register(user, userForRegister.Password);
 
             return StatusCode(201);
         }

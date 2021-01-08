@@ -10,8 +10,8 @@ using MyFinances.API.Data;
 namespace MyFinances.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201107105117_AddUserIdToOperation")]
-    partial class AddUserIdToOperation
+    [Migration("20210108202310_InitialDb")]
+    partial class InitialDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,10 +30,12 @@ namespace MyFinances.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -44,22 +46,26 @@ namespace MyFinances.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NameOperation")
+                    b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Operations");
                 });
@@ -82,6 +88,24 @@ namespace MyFinances.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MyFinances.API.Models.Category", b =>
+                {
+                    b.HasOne("MyFinances.API.Models.User", "User")
+                        .WithMany("Categories")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MyFinances.API.Models.Operation", b =>
+                {
+                    b.HasOne("MyFinances.API.Models.Category", "Category")
+                        .WithMany("Collections")
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("MyFinances.API.Models.User", "User")
+                        .WithMany("Operations")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
