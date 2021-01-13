@@ -46,7 +46,8 @@ namespace MyFinances.API.Controllers
         {
             User userFromRepo = await _authRepository.Login(userForLogin.Email.ToLower(), userForLogin.Password);
 
-            if (userFromRepo == null) return Unauthorized();
+            if (userFromRepo == null) 
+                return Unauthorized("Podaj prawidłowe dane!"); 
 
             // create token
             var claims = new[]
@@ -55,17 +56,17 @@ namespace MyFinances.API.Controllers
                 new Claim("user", userFromRepo.Email.ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddMinutes(240),
                 SigningCredentials = creds
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 
             return Ok(new { token = tokenHandler.WriteToken(token) });
         }

@@ -4,7 +4,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
 import { map } from 'rxjs/operators';
 import { AlertifyService } from './alertify.service';
-import { User } from '../_model/user';
+import { User } from '../model/user';
 import { Router } from '@angular/router';
 
 @Injectable({

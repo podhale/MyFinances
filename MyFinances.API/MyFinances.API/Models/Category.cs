@@ -9,6 +9,7 @@ namespace MyFinances.API.Models
         public string Name { get; set; }
 
         public virtual User User { get; set; }
+
         public virtual ICollection<Operation> Collections { get; set; }
     }
 }

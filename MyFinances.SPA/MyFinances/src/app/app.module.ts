@@ -5,17 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { appRoutes } from './routes';
-import { AuthGuard } from './_guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { HomeComponent } from './home/home.component';
-import { NavComponent } from './nav/nav.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { HomeComponent } from './components/home/home.component';
+import { NavComponent } from './components/nav/nav.component';
 
 
-import { AuthService } from './_services/auth.service';
-import { AlertifyService } from './_services/alertify.service';
-import { FinancesService } from './_services/finances.service';
+import { AuthService } from './services/auth.service';
+import { AlertifyService } from './services/alertify.service';
+import { FinancesService } from './services/finances.service';
 import { JwtModule } from '@auth0/angular-jwt';
 
 export function tokkenGetter(): string {
@@ -23,7 +23,7 @@ export function tokkenGetter(): string {
 }
 
 @NgModule({
-  declarations: [	
+  declarations: [
       AppComponent,
       LoginComponent,
       RegisterComponent,

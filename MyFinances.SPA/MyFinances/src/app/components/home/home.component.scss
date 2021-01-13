@@ -73,8 +73,30 @@
     min-height: 5em;
     width: 100% !important;
 }
-
+.header-tekst {
+    color: #CF0E0E;
+    padding-left: 0.5em;
+}
 .row {
     margin-right: 0;
     margin-left: 0;
+}
+
+.open-modal {
+    position: absolute;
+    width: 3em;
+    height: 2em;
+    right: 5px;
+    top: -1em;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    font-weight: 700;
+}
+
+.button-green {
+    background-color: seagreen;
+}
+.button-red {
+    background-color: #CF0E0E;
 }

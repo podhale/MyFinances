@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MonthSaldo } from '../_model/monthSaldo';
+import { MonthSaldo } from '../model/monthSaldo';
 import { environment } from 'src/environments/environment';
-import { Operation } from '../_model/operation';
+import { Operation } from '../model/operation';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +23,9 @@ export class FinancesService {
 
   addOperation(operation: Operation): any {
     return this.http.post(environment.api + 'Finances/addOperation', operation).toPromise();
+  }
+
+  showOperation(userId: string): any {
+    return this.http.get(environment.api + 'Finances/getOperations?userId=' + userId).toPromise();
   }
 }

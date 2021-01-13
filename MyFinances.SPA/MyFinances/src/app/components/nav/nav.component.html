@@ -1,0 +1,34 @@
+<div class="bs-example"  *ngIf="loggedIn()">
+  <nav class="navbar navbar-expand-md navbar-light">
+    <div class="container">
+      <a href="#" class="navbar-brand nav-title">MOJE FINANSE
+      </a>
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav">
+              <a [routerLink]="['home']" [routerLinkActive] class="nav-item nav-link active">Konto</a>
+              <a href="#" class="nav-item nav-link">Moje operacje</a>
+              <a href="#" class="nav-item nav-link">Planowanie</a>
+              <a href="#" class="nav-item nav-link disabled" tabindex="-1">Raport</a>
+          </div>
+          <div class="navbar-nav ml-auto">
+            <div *ngIf="loggedIn()" class="dropdown show">
+              <button type="button" id="dropdownMenuButton" class="btn " data-toggle="dropdown" >
+                <a  class="dropdown-toggle nav-item nav-link pointer">
+                  Witaj {{ authService.getUserName() | titlecase }}
+                </a>
+              </button>
+              
+        
+              <div class="dropdown-menu mt-2" aria-labelledby="dropdownMenuButton" >
+                 <!-- <a class="dropdown-item" [routerLink]="['/uzytkownik/edycja']"><i class="fa fa-user"></i>Edytuj profil</a>-->
+                <a class="dropdown-item pointer" (click)="logout()"><i class="fa fa-sign-out"></i> Wyloguj</a>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </nav>

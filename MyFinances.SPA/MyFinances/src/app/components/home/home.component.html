@@ -3,7 +3,7 @@
     <div class="container-fluid">
 
       <div class="row col-md-12 header-mf">
-        PODSUMOWANIE: OGÓLNE
+        PODSUMOWANIE: <span class="header-tekst">OGÓLNE</span>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -12,18 +12,18 @@
             <div class="saldo-value"> {{saldo | number:'1.2'}} PLN</div>
           </div>
         </div>
-        
+
         <div class="col-md-4">
           <div class="saldo-mf intent-target">
             <div class="saldo-desc">Środki przeznaczone na Cele</div>
-            <div class="saldo-value">{{saldo * 0.2 | number:'1.2'}} PLN</div>
+            <div class="saldo-value"> 0.00 PLN</div>
           </div>
         </div>
-        
+
         <div class="col-md-4">
           <div class="saldo-mf avail-res">
             <div class="saldo-desc">Dostępne środki</div>
-            <div class="saldo-value">{{saldo * 0.8 | number:'1.2'}} PLN</div>
+            <div class="saldo-value"> 0.00 PLN</div>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
     <div class="container-fluid">
 
       <div class="row col-md-12 header-mf">
-        PODSUMOWANIE: LISTOPAD
+        PODSUMOWANIE: <span class="header-tekst"> {{months[today.getMonth()].toLocaleUpperCase()}}</span>
       </div>
       <div class="row">
         <div class="col-md-4">
@@ -47,14 +47,14 @@
             <div class="saldo-value">{{monthSaldo?.saldo | number:'1.2'}} PLN</div>
           </div>
         </div>
-        
+
         <div class="col-md-4">
           <div class="saldo-mf danger-mf">
             <div class="saldo-desc">Wydano</div>
             <div class="saldo-value">{{monthSaldo?.expense | number:'1.2'}} PLN</div>
           </div>
         </div>
-        
+
         <div class="col-md-4">
           <div class="saldo-mf success-mf">
             <div class="saldo-desc">Przychody</div>
@@ -66,14 +66,30 @@
 
     </div>
   </div>
+</div>
 
-  <div class="row container-fluid mt-5">
-    <div class="col-md-6">
-      <div class="section-mf"></div>
-    </div>
-    <div class="col-md-6">
-      <div class="section-mf float-right"></div>
+<div class="container mt-5">
+  <div class="row container-mf">
+    <div class="container-fluid">
+
+      <div class="row col-md-12 header-mf">
+        OSTATNIE OPERACJE:
+      </div>
+      <div class="row mb-4">
+
+        <div class="col-md-6">
+          <div class="open-modal button-red pointer">+</div>
+          <div class="section-mf">
+            
+          <p *ngFor="let item of operation">{{item.name}} {{item.price}}</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="open-modal button-green pointer">+</div>
+          <div class="section-mf float-right"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-

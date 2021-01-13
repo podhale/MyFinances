@@ -22,11 +22,11 @@ namespace MyFinances.API.Controllers
             _financesRepository = financesRepository;
         }
 
-        //[HttpGet("saldo")]
-        //public async Task<float> GetSaldoForUser(Guid userId)
-        //{
-        //    return await _financesRepository.GetSaldo(userId);
-        //}
+        [HttpGet("saldo")]
+        public async Task<float> GetSaldoForUser(Guid userId)
+        {
+            return await _financesRepository.GetSaldo(userId);
+        }
 
         [HttpGet("monthSaldo")]
         public async Task<MonthSaldo> GetSaldoMonthForUser(Guid userId, int month, int year)
@@ -41,6 +41,11 @@ namespace MyFinances.API.Controllers
             return Ok();
         }
 
+        [HttpGet("getOperations")]
+        public async Task<List<Operation>> GetOperations(Guid userId)
+        {
+            return await _financesRepository.GetOperations(userId);
+        }
 
     }
 }

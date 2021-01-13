@@ -18,16 +18,16 @@ namespace MyFinances.API.Repositories
             _context = context;
         }
 
-        //public async Task<float> GetSaldo(Guid userId)
-        //{
-        //    var result = await _context.Operations.GroupBy(o => o.UserId)
-        //           .Select(g => new { user = g.Key, total = g.Sum(i => i.Price) }).Where(op => op.user == userId).FirstOrDefaultAsync();
+        public async Task<float> GetSaldo(Guid userId)
+        {
+            var result = _context.Operations.GroupBy(o => o.User.Id)
+                   .Select(g => new { user = g.Key, total = g.Sum(i => i.Price) }).Where(op => op.user == userId).FirstOrDefault();
 
-        //    if (result == null)
-        //        return 0.0f;
+            if (result == null)
+                return 0.0f;
 
-        //    return result.total;
-        //}
+            return result.total;
+        }
 
         public async Task AddOperation(Operation operation)
         {
@@ -45,7 +45,7 @@ namespace MyFinances.API.Repositories
 
         private async Task<MonthSaldo> CountMonthSaldo(Guid userId, int month, int year)
         {
-            List<Operation> operations = new List<Operation>();//await GetUserOperations(userId, month, year);
+            List<Operation> operations = await GetUserOperations(userId, month, year);
             MonthSaldo saldo = new MonthSaldo(0,0,0);
             operations.ForEach(o =>
             {
@@ -62,10 +62,16 @@ namespace MyFinances.API.Repositories
             return saldo;
         }
 
-        //private async Task<List<Operation>> GetUserOperations(Guid userId, int month, int year)
-        //{
-        //    return await _context.Operations.Where(o => o.UserId == userId && o.Created.Month == month && o.Created.Year == year).ToListAsync();
-        //}
+        private async Task<List<Operation>> GetUserOperations(Guid userId, int month, int year)
+        {
+            List<Operation> operations = await _context.Operations.Where(o => o.User.Id == userId && o.Created.Month == month && o.Created.Year == year).ToListAsync();
+            return operations;
+        }
 
+        public async Task<List<Operation>> GetOperations(Guid userId)
+        {
+            List<Operation> operations = await _context.Operations.Where(o => o.User.Id == userId).ToListAsync();
+            return operations;
+        }
     }
 }
