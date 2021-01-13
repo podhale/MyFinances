@@ -69,27 +69,86 @@
 </div>
 
 <div class="container mt-5">
-  <div class="row container-mf">
-    <div class="container-fluid">
+    <div class="container-fluid noPadding">
 
-      <div class="row col-md-12 header-mf">
-        OSTATNIE OPERACJE:
-      </div>
       <div class="row mb-4">
 
-        <div class="col-md-6">
-          <div class="open-modal button-red pointer">+</div>
-          <div class="section-mf">
-            
-          <p *ngFor="let item of operation">{{item.name}} {{item.price}}</p>
+        <div class="col-md-6 noPadding">
+          <div class="open-modal button-red pointer" data-toggle="modal" data-target="#modalExpense"  data-backdrop="static" style="right: -1em"><div class="plus">+</div></div>
+          <div class="section-mf container">
+            <div class="row  header-mf ">
+              Wydatki
+            </div>
+            <div class="row-price row" *ngFor="let item of lastTenOperations?.expenses">
+              <div class="name-operation">{{item.name}}</div>
+              <div class="price-operation text-danger">{{item.price | number : '2.2-2' }} zł</div> 
+
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="open-modal button-green pointer">+</div>
-          <div class="section-mf float-right"></div>
+        <div class="col-md-6 right-col mt-1" >
+          <div class="open-modal button-green pointer"><div class="plus">+</div></div>
+          <div class="section-mf float-right container">
+            <div class="row header-mf">
+              Przychody
+            </div>
+            <div class="row-price  row" *ngFor="let item of lastTenOperations?.income">
+              <div class="name-operation">{{item.name}}</div>
+              <div class="price-operation text-success">{{item.price | number : '2.2-2' }} zł</div> 
+
+            </div>
+          </div>
         </div>
       </div>
 
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="container">
+    <div class="modal fade" id="modalExpense">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header center">
+            <h4 class="modal-title">Dodaj wydatek</h4>
+            <div class="open-modal button-red pointer" data-dismiss="modal" style="right: -1em"><div class="plus">+</div></div>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <div class="row">
+                <div class="form__group field">
+                  <input type="input" class="form__field" placeholder="Name" name="name" id='name' required  autocomplete="off"/>
+                  <label for="name" class="form__label">Nazwa</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form__group field">
+                  <input type="input" class="form__field" placeholder="Name" name="name" id='category' required  autocomplete="off"/>
+                  <label for="name" class="form__label">Kategoria</label>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="form__group field">
+                  <input type="input" class="form__field" placeholder="Name" name="name" id='date' required  autocomplete="off"/>
+                  <label for="name" class="form__label">Data</label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form__group field">
+                  <input type="input" type="number" class="form__field" placeholder="Name" name="price" name="price" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off"/>
+                  <label for="name" class="form__label">Kwota</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+          
+        </div>
+      </div>
     </div>
+    
   </div>
 </div>

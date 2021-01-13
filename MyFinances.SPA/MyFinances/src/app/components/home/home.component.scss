@@ -15,7 +15,7 @@
 .header-mf {
     font-weight: 700;
     font-size: 1em;
-    margin-top: 5px;
+    margin-top: 0.6em;
 }
 
 .saldo-mf {
@@ -70,7 +70,7 @@
     box-shadow: 0px 4px 5px   rgba(0, 0, 0, 0.3);
     background-color: white;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    min-height: 5em;
+    min-height: 30em;
     width: 100% !important;
 }
 .header-tekst {
@@ -85,12 +85,17 @@
 .open-modal {
     position: absolute;
     width: 3em;
-    height: 2em;
-    right: 5px;
-    top: -1em;
+    height: 3em;
+    right: 0;
     border-radius: 50%;
+    top: -1em;
+}
+.plus {
+    position: relative;
+    top: -0.3em;
     color: white;
     text-align: center;
+    font-size: 2.5em;
     font-weight: 700;
 }
 
@@ -99,4 +104,110 @@
 }
 .button-red {
     background-color: #CF0E0E;
+}
+
+.text-success {
+    color: #2CB973;
+}
+
+.text-danger {
+    color: #CF0E0E;
+}
+
+.row-price {
+    padding: 0.3em;
+    border-bottom: 1px solid slategrey;
+    margin-bottom: 0.3em;
+}
+
+.row-price:last-child {
+    border-bottom: 0em;
+}
+
+.name-operation {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+.price-operation {
+    position: absolute;
+    right: 5em;
+    font-weight: 700;
+}
+
+.noPadding {
+    padding: 0!important; 
+    margin: 0 !important;
+}
+.right-col {
+    left: 1em;
+}
+
+
+
+// start modal
+$primary: slategrey;
+$secondary: rgb(80, 80, 81);
+$red: #CF0E0E;
+$gray: #9b9b9b;
+.form__group {
+  position: relative;
+  padding: 10px 0 0;
+  margin-top: 1em;
+  width: 100%;
+}
+
+.form__field {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid $gray;
+  outline: 0;
+  font-size: 0.9rem;
+  color: $red;
+  padding: 6px 0;
+  text-align: center;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ .form__label {
+    font-size: 1rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+.form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: $gray;
+}
+
+.form__field:focus {
+  ~ .form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 0.8rem;
+    color: $primary;
+    font-weight:700;    
+  }
+  padding-bottom: 2px;  
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, $primary,$secondary);
+  border-image-slice: 1;
+}
+/* reset input */
+.form__field{
+  &:required,&:invalid { box-shadow:none; }
 }

@@ -18,7 +18,7 @@
             <div *ngIf="loggedIn()" class="dropdown show">
               <button type="button" id="dropdownMenuButton" class="btn " data-toggle="dropdown" >
                 <a  class="dropdown-toggle nav-item nav-link pointer">
-                  Witaj {{ authService.getUserName() | titlecase }}
+                  Witaj, {{ authService.getUserName() | titlecase }}
                 </a>
               </button>
               

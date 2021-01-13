@@ -28,7 +28,7 @@ export function tokkenGetter(): string {
       LoginComponent,
       RegisterComponent,
       HomeComponent,
-      NavComponent
+      NavComponent,
    ],
   imports: [
       BrowserModule,

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFinances.API.Dto;
 using MyFinances.API.Interfaces;
 using MyFinances.API.Models;
 
@@ -45,6 +46,12 @@ namespace MyFinances.API.Controllers
         public async Task<List<Operation>> GetOperations(Guid userId)
         {
             return await _financesRepository.GetOperations(userId);
+        }
+
+        [HttpGet("getLastTenOperations")]
+        public async Task<LastTenOperations> GetLastTenOperations(Guid userId)
+        {
+            return await _financesRepository.GetLastTenOperations(userId);
         }
 
     }

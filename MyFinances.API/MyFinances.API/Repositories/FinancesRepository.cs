@@ -6,6 +6,7 @@ using System.Linq;
 using MyFinances.API.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MyFinances.API.Dto;
 
 namespace MyFinances.API.Repositories
 {
@@ -72,6 +73,22 @@ namespace MyFinances.API.Repositories
         {
             List<Operation> operations = await _context.Operations.Where(o => o.User.Id == userId).ToListAsync();
             return operations;
+        }
+
+        public async Task<LastTenOperations> GetLastTenOperations(Guid UserId)
+        {
+            LastTenOperations lastTenOperations = new LastTenOperations();
+            try
+            {
+                lastTenOperations.Expenses = await _context.Operations.OrderBy(i => i.Created).Where(o => o.User.Id == UserId && o.Price < 0).Take(10).ToListAsync();
+                lastTenOperations.Income = await _context.Operations.OrderBy(i => i.Created).Where(o => o.User.Id == UserId && o.Price > 0).Take(10).ToListAsync();
+            }
+            catch(Exception e)
+            {
+                var d = e;
+            }
+
+            return lastTenOperations;
         }
     }
 }

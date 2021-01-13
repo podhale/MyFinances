@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MonthSaldo } from '../model/monthSaldo';
 import { environment } from 'src/environments/environment';
 import { Operation } from '../model/operation';
+import { LastTenOperations } from '../model/lastTenOperations';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,9 @@ export class FinancesService {
 
   showOperation(userId: string): any {
     return this.http.get(environment.api + 'Finances/getOperations?userId=' + userId).toPromise();
+  }
+
+  showLastOperation(userId: string): any {
+    return this.http.get<LastTenOperations>(environment.api + 'Finances/GetLastTenOperations?userId=' + userId).toPromise();
   }
 }
