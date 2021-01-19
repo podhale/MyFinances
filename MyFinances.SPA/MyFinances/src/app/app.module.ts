@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
+import {DpDatePickerModule} from 'ng2-date-picker';
 import { NavComponent } from './components/nav/nav.component';
 
 
@@ -17,6 +18,7 @@ import { AuthService } from './services/auth.service';
 import { AlertifyService } from './services/alertify.service';
 import { FinancesService } from './services/finances.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { ChartsModule } from 'ng2-charts';
 
 export function tokkenGetter(): string {
   return localStorage.getItem('token');
@@ -43,6 +45,8 @@ export function tokkenGetter(): string {
            disallowedRoutes: ['localhost:5000/api/auth']
         }
      }),
+     DpDatePickerModule,
+     ChartsModule
   ],
   providers: [
     AuthService,

@@ -211,3 +211,15 @@ $gray: #9b9b9b;
 .form__field{
   &:required,&:invalid { box-shadow:none; }
 }
+
+option {
+    text-align: center !important;
+    text-align-last:center !important;
+}
+
+select {
+    text-align: center !important;
+    text-align-last:center;
+}
+
+

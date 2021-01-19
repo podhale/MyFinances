@@ -36,119 +36,162 @@
 <div class="container mt-5">
   <div class="row container-mf">
     <div class="container-fluid">
+      <div>
+        <div class="row col-md-12 header-mf">
 
-      <div class="row col-md-12 header-mf">
-        PODSUMOWANIE: <span class="header-tekst"> {{months[today.getMonth()].toLocaleUpperCase()}}</span>
+          PODSUMOWANIE: <span class="header-tekst"> {{months[today.getMonth()].toLocaleUpperCase()}}</span>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="saldo-mf saldo">
+              <div class="saldo-desc">Saldo miesięczne</div>
+              <div class="saldo-value">{{monthSaldo?.saldo | number:'1.2'}} PLN</div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="saldo-mf danger-mf">
+              <div class="saldo-desc">Wydano</div>
+              <div class="saldo-value">{{monthSaldo?.expense | number:'1.2'}} PLN</div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="saldo-mf success-mf">
+              <div class="saldo-desc">Przychody</div>
+              <div class="saldo-value">{{monthSaldo?.income | number:'1.2'}} PLN</div>
+            </div>
+          </div>
+        </div>
+
+
       </div>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="saldo-mf saldo">
-            <div class="saldo-desc">Saldo miesięczne</div>
-            <div class="saldo-value">{{monthSaldo?.saldo | number:'1.2'}} PLN</div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="saldo-mf danger-mf">
-            <div class="saldo-desc">Wydano</div>
-            <div class="saldo-value">{{monthSaldo?.expense | number:'1.2'}} PLN</div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="saldo-mf success-mf">
-            <div class="saldo-desc">Przychody</div>
-            <div class="saldo-value">{{monthSaldo?.income | number:'1.2'}} PLN</div>
-          </div>
-        </div>
-      </div>
-
-
     </div>
   </div>
-</div>
 
-<div class="container mt-5">
+  <div class="container mt-5 noPadding">
     <div class="container-fluid noPadding">
 
-      <div class="row mb-4">
+      <div class="row mb-4 mt-5">
 
         <div class="col-md-6 noPadding">
-          <div class="open-modal button-red pointer" data-toggle="modal" data-target="#modalExpense"  data-backdrop="static" style="right: -1em"><div class="plus">+</div></div>
+          <div class="open-modal button-red pointer" data-toggle="modal" data-target="#modalExpense"
+            data-backdrop="static" style="right: -1em">
+            <div class="plus">+</div>
+          </div>
           <div class="section-mf container">
             <div class="row  header-mf ">
               Wydatki
             </div>
             <div class="row-price row" *ngFor="let item of lastTenOperations?.expenses">
               <div class="name-operation">{{item.name}}</div>
-              <div class="price-operation text-danger">{{item.price | number : '2.2-2' }} zł</div> 
+              <div class="price-operation text-danger">{{item.price | number : '2.2-2' }} zł</div>
 
             </div>
           </div>
         </div>
-        <div class="col-md-6 right-col mt-1" >
-          <div class="open-modal button-green pointer"><div class="plus">+</div></div>
+        <div class="col-md-6 right-col mt-1">
+          <div class="open-modal button-green pointer">
+            <div class="plus">+</div>
+          </div>
           <div class="section-mf float-right container">
             <div class="row header-mf">
               Przychody
             </div>
             <div class="row-price  row" *ngFor="let item of lastTenOperations?.income">
               <div class="name-operation">{{item.name}}</div>
-              <div class="price-operation text-success">{{item.price | number : '2.2-2' }} zł</div> 
+              <div class="price-operation text-success">{{item.price | number : '2.2-2' }} zł</div>
 
             </div>
           </div>
         </div>
       </div>
 
+    </div>
   </div>
-</div>
 
-<div class="container mt-5">
-  <div class="container">
-    <div class="modal fade" id="modalExpense">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header center">
-            <h4 class="modal-title">Dodaj wydatek</h4>
-            <div class="open-modal button-red pointer" data-dismiss="modal" style="right: -1em"><div class="plus">+</div></div>
-          </div>
-          <div class="modal-body">
-            <div class="container">
-              <div class="row">
-                <div class="form__group field">
-                  <input type="input" class="form__field" placeholder="Name" name="name" id='name' required  autocomplete="off"/>
-                  <label for="name" class="form__label">Nazwa</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form__group field">
-                  <input type="input" class="form__field" placeholder="Name" name="name" id='category' required  autocomplete="off"/>
-                  <label for="name" class="form__label">Kategoria</label>
-                </div>
-              </div>
-              
-              <div class="row">
-                <div class="form__group field">
-                  <input type="input" class="form__field" placeholder="Name" name="name" id='date' required  autocomplete="off"/>
-                  <label for="name" class="form__label">Data</label>
-                </div>
-              </div>
-              <div class="row">
-                <div class="form__group field">
-                  <input type="input" type="number" class="form__field" placeholder="Name" name="price" name="price" step="0.01"  pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off"/>
-                  <label for="name" class="form__label">Kwota</label>
-                </div>
-              </div>
+
+  <div class="container mt-5 noPadding">
+    <div class="container-fluid noPadding">
+
+      <div class="container-mf">
+        <div class="row ">
+          <div>
+            <div style="position: relative; width: 70vw !important;">
+              <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [legend]="barChartLegend"
+                [colors]="barChartColors"
+                [chartType]="barChartType">
+              </canvas>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div>
-          
         </div>
       </div>
     </div>
-    
   </div>
-</div>
+  
+
+
+  <div class="container mt-5">
+    <div class="container">
+      <div class="modal fade" id="modalExpense">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+
+            <form [formGroup]="operationForm" (ngSubmit)="addOperations()">
+              <div class="modal-header center">
+                <h4 class="modal-title">Dodaj wydatek </h4>
+                <div class="open-modal button-red pointer" data-dismiss="modal" style="right: -1em">
+                  <div class="plus">+</div>
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="container">
+                  <div class="row">
+                    <div class="form__group field">
+                      <input type="input" class="form__field" placeholder="Name" name="description" id='description'
+                        required autocomplete="off" formControlName="name" autocomplete="nope" />
+                      <label for="name" class="form__label">Nazwa</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form__group field">
+                      <select class="form__field" formControlName="categoryId" name="categoryId" id='categoryId'
+                        required>
+                        <option value="">Wybierz kategorie</option>
+                        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+                      </select>
+                      <label for="category" class="form__label">Kategoria:</label>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form__group field">
+                      <dp-date-picker class="form__field" theme="dp-material" name="date" id='date'
+                        formControlName="date" [config]="config" ></dp-date-picker>
+                      <label for="date" class="form__label">Data</label>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form__group field">
+                      <input type="input" type="number" class="form__field" name="price" formControlName="price"
+                        step="0.1" pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off" />
+                      <label for="price" class="form__label">Kwota</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary">dodaj</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,14 @@ namespace MyFinances.API.Controllers
     public class FinancesController : ControllerBase
     {
         private readonly IFinancesRepository _financesRepository;
+        private readonly IAuthRepository _authRepository;
+        private readonly IMapper _mapper;
 
-        public FinancesController(IFinancesRepository financesRepository)
+        public FinancesController(IFinancesRepository financesRepository, IMapper mapper, IAuthRepository authRepository)
         {
             _financesRepository = financesRepository;
+            _authRepository = authRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("saldo")]
@@ -35,9 +40,18 @@ namespace MyFinances.API.Controllers
             return await _financesRepository.GetMonthSaldo(userId, month, year);
         }
 
-        [HttpPost("addOperation")]
-        public async Task<IActionResult> AddOperation(Operation operation)
+        [HttpGet("getStatistic")]
+        public async Task<Statistic> GetStatistic(Guid userId)
         {
+            return await _financesRepository.GetStatistic(userId);
+        }
+
+        [HttpPost("addOperation")]
+        public async Task<IActionResult> AddOperation([FromBody] AddOperationDto operationDto)
+        {
+            Operation operation = _mapper.Map<Operation>(operationDto);
+            operation.User = await _authRepository.GetUser(new Guid(operationDto.UserId));
+            operation.Category = await _financesRepository.GetCategory(new Guid(operationDto.UserId));
             await _financesRepository.AddOperation(operation);
             return Ok();
         }
@@ -52,6 +66,12 @@ namespace MyFinances.API.Controllers
         public async Task<LastTenOperations> GetLastTenOperations(Guid userId)
         {
             return await _financesRepository.GetLastTenOperations(userId);
+        }
+
+        [HttpGet("getCategories")]
+        public async Task<List<Category>> GetCategories(Guid userId)
+        {
+            return await _financesRepository.GetCategories(userId);
         }
 
     }

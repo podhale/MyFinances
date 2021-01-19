@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using System;
 
 namespace MyFinances.API.Repositories
 {
@@ -42,6 +43,11 @@ namespace MyFinances.API.Repositories
             await _context.SaveChangesAsync();
 
             return user;
+        }
+
+        public async Task<User> GetUser(Guid userId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
         }
 
         public async Task<bool> UserExist(string email)

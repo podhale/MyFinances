@@ -13,5 +13,9 @@ namespace MyFinances.API.Interfaces
         public Task AddOperation(Operation operation);
         public Task<List<Operation>> GetOperations(Guid userId);
         public Task<LastTenOperations> GetLastTenOperations(Guid UserId);
+
+        public Task<List<Category>> GetCategories(Guid userId);
+        public Task<Category> GetCategory(Guid userId);
+        public Task<Statistic> GetStatistic(Guid userId);
     }
 }

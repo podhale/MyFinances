@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MonthSaldo } from '../model/monthSaldo';
 import { environment } from 'src/environments/environment';
-import { Operation } from '../model/operation';
+import { Statistic } from '../model/statistic';
 import { LastTenOperations } from '../model/lastTenOperations';
+import { AddOperationDto } from '../model/addOperationDto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class FinancesService {
                                                                           + '&year=' + year).toPromise();
   }
 
-  addOperation(operation: Operation): any {
+  addOperation(operation: AddOperationDto): any {
     return this.http.post(environment.api + 'Finances/addOperation', operation).toPromise();
   }
 
@@ -32,5 +33,11 @@ export class FinancesService {
 
   showLastOperation(userId: string): any {
     return this.http.get<LastTenOperations>(environment.api + 'Finances/GetLastTenOperations?userId=' + userId).toPromise();
+  }
+  getCategories(userId: string): any {
+    return this.http.get(environment.api + 'Finances/getCategories?userId=' + userId).toPromise();
+  }
+  showStatistic(userId: string): Promise<Statistic> {
+    return this.http.get<Statistic>(environment.api + 'Finances/getStatistic?userId=' + userId).toPromise();
   }
 }

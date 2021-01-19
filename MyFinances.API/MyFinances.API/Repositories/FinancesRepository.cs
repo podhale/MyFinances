@@ -7,6 +7,7 @@ using MyFinances.API.Models;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using MyFinances.API.Dto;
+using System.Globalization;
 
 namespace MyFinances.API.Repositories
 {
@@ -75,20 +76,48 @@ namespace MyFinances.API.Repositories
             return operations;
         }
 
+        public async Task<List<Category>> GetCategories(Guid userId)
+        {
+            List<Category> categories = await _context.Categories.Where(o => o.User.Id == userId).ToListAsync();
+            return categories;
+        }        
+        
+        public async Task<Category> GetCategory(Guid userId)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(o => o.User.Id == userId);
+        }
+
         public async Task<LastTenOperations> GetLastTenOperations(Guid UserId)
         {
             LastTenOperations lastTenOperations = new LastTenOperations();
-            try
-            {
-                lastTenOperations.Expenses = await _context.Operations.OrderBy(i => i.Created).Where(o => o.User.Id == UserId && o.Price < 0).Take(10).ToListAsync();
-                lastTenOperations.Income = await _context.Operations.OrderBy(i => i.Created).Where(o => o.User.Id == UserId && o.Price > 0).Take(10).ToListAsync();
-            }
-            catch(Exception e)
-            {
-                var d = e;
-            }
+
+            lastTenOperations.Expenses = await _context.Operations.OrderByDescending(i => i.Created).Where(o => o.User.Id == UserId && o.Price < 0).Take(10).ToListAsync();
+            lastTenOperations.Income = await _context.Operations.OrderByDescending(i => i.Created).Where(o => o.User.Id == UserId && o.Price > 0).Take(10).ToListAsync();
+
 
             return lastTenOperations;
+        }
+
+        public async Task<Statistic> GetStatistic(Guid userId)
+        {
+            DateTime today = DateTime.Now; 
+            Statistic statistic = new Statistic();
+            List<float> expanses = new List<float>();
+            List<float> income = new List<float>();
+            List<string> dates = new List<string>();
+            for(int x = 0; x < 6; x++)
+            {
+                MonthSaldo saldo = await GetMonthSaldo(userId, today.Month, today.Year);
+                expanses.Add(Math.Abs(saldo.Expense));
+                income.Add(saldo.Income);
+                dates.Add(today.ToString("yyyy-MM"));
+                today = today.AddMonths(-1);
+            }
+            statistic.Date = dates;
+            statistic.Income = income;
+            statistic.Expenses = expanses;
+            
+            return statistic;
         }
     }
 }

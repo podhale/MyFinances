@@ -1,3 +1,5 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~open-iconic/font/css/open-iconic-bootstrap.css';
 html,body {
     margin: 0;
     padding: 0;
@@ -58,3 +60,16 @@ html,body {
   .pointer {
     cursor: pointer;
   }
+
+  dp-date-picker.dp-material .dp-picker-input {
+    box-sizing: border-box;
+    font-size: 20px;
+    height: 30px;
+    width: 100%!important;
+    text-align: center!important;
+    outline: none;
+    margin: auto !important;
+    border: 0;
+    font-weight: 700;
+    color: #CF0E0E;
+}

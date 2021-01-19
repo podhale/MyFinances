@@ -8,6 +8,7 @@ namespace MyFinances.API.Models
         public string Name { get; set; }
         public float Price { get; set; }
         public DateTime Created { get; set; }
+        public DateTime DateOperation { get; set; }
         public virtual User User { get; set; }
         public virtual Category Category { get; set; }
 
