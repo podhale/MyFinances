@@ -12,6 +12,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { HomeComponent } from './components/home/home.component';
 import {DpDatePickerModule} from 'ng2-date-picker';
 import { NavComponent } from './components/nav/nav.component';
+import { OperationsComponent } from './components/operations/operations.component';
+
 
 
 import { AuthService } from './services/auth.service';
@@ -31,6 +33,7 @@ export function tokkenGetter(): string {
       RegisterComponent,
       HomeComponent,
       NavComponent,
+      OperationsComponent
    ],
   imports: [
       BrowserModule,

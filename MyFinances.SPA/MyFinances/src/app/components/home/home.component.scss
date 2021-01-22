@@ -107,11 +107,11 @@
 }
 
 .text-success {
-    color: #2CB973;
+    color: #2CB973 !important;
 }
 
 .text-danger {
-    color: #CF0E0E;
+    color: #CF0E0E !important;
 }
 
 .row-price {
@@ -149,7 +149,6 @@
 // start modal
 $primary: slategrey;
 $secondary: rgb(80, 80, 81);
-$red: #CF0E0E;
 $gray: #9b9b9b;
 .form__group {
   position: relative;
@@ -165,7 +164,6 @@ $gray: #9b9b9b;
   border-bottom: 2px solid $gray;
   outline: 0;
   font-size: 0.9rem;
-  color: $red;
   padding: 6px 0;
   text-align: center;
   background: transparent;
@@ -222,4 +220,15 @@ select {
     text-align-last:center;
 }
 
+.date-operation {
 
+}
+
+.number-operation {
+    width: 1.5em;
+    text-align: center;
+    border-radius: 50%;
+    color: white;
+    font-weight: 700;
+    margin-right: 1em;
+}

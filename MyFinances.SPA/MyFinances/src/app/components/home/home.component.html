@@ -75,30 +75,34 @@
       <div class="row mb-4 mt-5">
 
         <div class="col-md-6 noPadding">
-          <div class="open-modal button-red pointer" data-toggle="modal" data-target="#modalExpense"
-            data-backdrop="static" style="right: -1em">
+          <div class="open-modal button-red pointer" data-toggle="modal"
+            data-backdrop="static" style="right: -1em" (click)="showModal(false)">
             <div class="plus">+</div>
           </div>
           <div class="section-mf container">
             <div class="row  header-mf ">
               Wydatki
             </div>
-            <div class="row-price row" *ngFor="let item of lastTenOperations?.expenses">
-              <div class="name-operation">{{item.name}}</div>
+            <div class="row-price row" *ngFor="let item of lastTenOperations?.expenses; let i = index" >
+              <div class="number-operation text-danger">{{i + 1}}</div>
+              <div class="name-operation">{{item.categoryId | date : 'yyyy-MM-dd'}}</div>
+              <div class="name-operation  ml-2">{{item.name}}</div>
               <div class="price-operation text-danger">{{item.price | number : '2.2-2' }} zł</div>
 
             </div>
           </div>
         </div>
         <div class="col-md-6 right-col mt-1">
-          <div class="open-modal button-green pointer">
+          <div class="open-modal button-green pointer" (click)="showModal(true)">
             <div class="plus">+</div>
           </div>
           <div class="section-mf float-right container">
             <div class="row header-mf">
               Przychody
             </div>
-            <div class="row-price  row" *ngFor="let item of lastTenOperations?.income">
+            <div class="row-price  row" *ngFor="let item of lastTenOperations?.income; let i = index">
+              <div class="number-operation text-success">{{i + 1}}</div>
+              <div class="name-operation">{{item.created | date : 'yyyy-MM-dd'}}</div>
               <div class="name-operation">{{item.name}}</div>
               <div class="price-operation text-success">{{item.price | number : '2.2-2' }} zł</div>
 
@@ -138,14 +142,14 @@
 
   <div class="container mt-5">
     <div class="container">
-      <div class="modal fade" id="modalExpense">
-        <div class="modal-dialog modal-dialog-centered">
+      <div class="modal fade" id="modalAddOperations">
+        <div class="modal-dialog modal-dialog-centered"  [ngClass]="(isExpanse)?'text-success':'text-danger'">
           <div class="modal-content">
 
             <form [formGroup]="operationForm" (ngSubmit)="addOperations()">
               <div class="modal-header center">
                 <h4 class="modal-title">Dodaj wydatek </h4>
-                <div class="open-modal button-red pointer" data-dismiss="modal" style="right: -1em">
+                <div class="open-modal  pointer"  [ngClass]="(isExpanse)?'button-green':'button-red'" data-dismiss="modal" style="right: -1em">
                   <div class="plus">+</div>
                 </div>
               </div>
@@ -154,13 +158,13 @@
                   <div class="row">
                     <div class="form__group field">
                       <input type="input" class="form__field" placeholder="Name" name="description" id='description'
-                        required autocomplete="off" formControlName="name" autocomplete="nope" />
+                        required autocomplete="off" formControlName="name" autocomplete="nope" [ngClass]="(isExpanse)?'text-success':'text-danger'" />
                       <label for="name" class="form__label">Nazwa</label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="form__group field">
-                      <select class="form__field" formControlName="categoryId" name="categoryId" id='categoryId'
+                      <select class="form__field" formControlName="categoryId" name="categoryId" id='categoryId' [ngClass]="(isExpanse)?'text-success':'text-danger'"
                         required>
                         <option value="">Wybierz kategorie</option>
                         <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
@@ -169,16 +173,16 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                    <div class="form__group field">
+                  <div class="row" [ngClass]="(isExpanse)?'text-success':'text-danger'" >
+                    <div class="form__group field" [ngClass]="(isExpanse)?'text-success':'text-danger'" >
                       <dp-date-picker class="form__field" theme="dp-material" name="date" id='date'
-                        formControlName="date" [config]="config" ></dp-date-picker>
+                        formControlName="date" [config]="config" [ngClass]="(isExpanse)?'text-success':'text-danger'" style="color: red!important;"></dp-date-picker>
                       <label for="date" class="form__label">Data</label>
                     </div>
                   </div>
                   <div class="row">
                     <div class="form__group field">
-                      <input type="input" type="number" class="form__field" name="price" formControlName="price"
+                      <input type="input" type="number" class="form__field" [ngClass]="(isExpanse)?'text-success':'text-danger'" min="0.1" name="price" formControlName="price"
                         step="0.1" pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off" />
                       <label for="price" class="form__label">Kwota</label>
                     </div>
@@ -186,7 +190,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-secondary">dodaj</button>
+                <button type="submit"  [ngClass]="(isExpanse)?'button-green':'button-red'" class="btn btn-secondary">dodaj</button>
               </div>
             </form>
           </div>

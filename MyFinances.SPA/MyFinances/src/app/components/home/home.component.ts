@@ -13,6 +13,9 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Statistic } from 'src/app/model/statistic';
+import { AlertifyService } from 'src/app/services/alertify.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-home',
@@ -28,6 +31,7 @@ export class HomeComponent implements OnInit {
             'Lipiec', 'Sierpień', 'Wrzesień',
             'Październik', 'Listopad', 'Grudzień'];
   saldo = 0;
+  isExpanse = true;
   lastTenOperations: LastTenOperations;
   operation: Operation;
   monthSaldo: MonthSaldo;
@@ -72,11 +76,12 @@ export class HomeComponent implements OnInit {
 
   constructor(private financesService: FinancesService,
               private authService: AuthService,
-              private datePipe: DatePipe) {
+              private datePipe: DatePipe,
+              private alertyfyService: AlertifyService) {
                 this.config = {
                   locale: 'pl',
                   format: 'YYYY-MM-DD',
-                  maxDate: this.datePipe.transform(this.today, 'yyyy-MM-dd'),
+                  maxDate: this.today,
                   mode: '"day"\|"month"\|"time"\|"daytime"'
               }; }
 
@@ -100,14 +105,20 @@ export class HomeComponent implements OnInit {
   }
 
   addOperations(): void {
-    let operation = new AddOperationDto();
-    operation = this.operationForm.value;
-    operation.price = Number.parseFloat(operation.price?.toString());
-    operation.userId =  this.authService.getCurrentUserId();
-    this.financesService.addOperation(operation).then(v => {
-      this.getInfo();
-      this.close();
-    });
+
+    if (this.operationForm.valid) {
+      let operation = new AddOperationDto();
+      operation = this.operationForm.value;
+      operation.price = !this.isExpanse ? Number.parseFloat((operation.price * (-1)) + '') : Number.parseFloat(operation.price?.toString());
+      operation.userId =  this.authService.getCurrentUserId();
+
+      this.financesService.addOperation(operation).then(() => {
+        this.getInfo();
+        this.close();
+      });
+    } else {
+      this.alertyfyService.error('Uzupełnij wszytskie pola!');
+    }
 
   }
 
@@ -126,6 +137,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  showModal(isExpanse: boolean): void {
+
+    this.isExpanse = isExpanse;
+    $('#modalAddOperations').modal('show');
+  }
+  cloaseModal(): void {
+    $('#modalAddOperations').modal('close');
+  }
   // events
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);

@@ -70,6 +70,6 @@ html,body {
     outline: none;
     margin: auto !important;
     border: 0;
+    border: none !important;
     font-weight: 700;
-    color: #CF0E0E;
 }
