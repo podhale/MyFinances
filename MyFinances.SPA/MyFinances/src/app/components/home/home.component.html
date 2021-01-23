@@ -109,14 +109,14 @@
             </div>
             <div class="mf-item" *ngFor="let item of lastTenOperations?.income; let i = index">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                   <div class="mf-number">
                     <div class="number-operation text-success">{{i + 1}}</div>
                   </div>
                   <span class="mf-item-title">{{item.name | titlecase}}</span>
                   <div class="mf-sub-title">{{item.category.name}}</div>
                 </div>
-                <div class="col-md-3 mf-info">
+                <div class="col-md-4 mf-info">
                   <div class="price-operation text-success">{{item.price | number : '1.2-2' }} PLN</div>
                   <div class="price-operation mf-sub-date">{{item.created | date: 'dd/MM/yyyy'}}</div>
                 </div>
