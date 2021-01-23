@@ -24,7 +24,12 @@ namespace MyFinances.API.Controllers
             _authRepository = repository;
             _config = configuration;
         }
-
+        /// <summary>
+        /// User registration
+        /// </summary>
+        /// <param name="userForRegister">DTO model sent from registration form</param>
+        /// <response code="201">Returns status 201 if the user has registered correctly</response>
+        /// <response code="400">Returns status 400 if there is a user with the same email</response>            
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegister)
         {
@@ -41,6 +46,12 @@ namespace MyFinances.API.Controllers
             return StatusCode(201);
         }
 
+        /// <summary>
+        /// User login
+        /// </summary>
+        /// <param name="userForLogin">DTO model sent from login form</param>
+        /// <response code="201">Returns status 200 if the user has login correctly</response>
+        /// <response code="401">Returns status 401 if the login details are incorrect </response>          
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {

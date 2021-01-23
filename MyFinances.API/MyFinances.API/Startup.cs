@@ -17,6 +17,8 @@ using MyFinances.API.Data;
 using MyFinances.API.Interfaces;
 using MyFinances.API.Repositories;
 using AutoMapper;
+using System.Reflection;
+using System.IO;
 
 namespace MyFinances.API
 {
@@ -39,6 +41,13 @@ namespace MyFinances.API
             .AddNewtonsoftJson(x =>
             {
                 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
             services.AddCors(c =>
             {
@@ -77,7 +86,14 @@ namespace MyFinances.API
              .AllowAnyOrigin()
              .AllowAnyMethod()
              .AllowAnyHeader());
+            app.UseSwagger();
 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
