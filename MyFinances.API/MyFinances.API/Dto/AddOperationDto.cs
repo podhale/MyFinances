@@ -8,6 +8,6 @@ namespace MyFinances.API.Dto
         public string UserId { get; set; }
         public string CategoryId { get; set; }
         public float Price { get; set; }
-        public string Date { get; set; }
+        public string DateOperation { get; set; }
     }
 }

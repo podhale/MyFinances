@@ -22,8 +22,8 @@ namespace MyFinances.API.Repositories
 
         public async Task<float> GetSaldo(Guid userId)
         {
-            var result = _context.Operations.GroupBy(o => o.User.Id)
-                   .Select(g => new { user = g.Key, total = g.Sum(i => i.Price) }).Where(op => op.user == userId).FirstOrDefault();
+            var result = await _context.Operations.GroupBy(o => o.User.Id)
+                   .Select(g => new { user = g.Key, total = g.Sum(i => i.Price) }).Where(op => op.user == userId).FirstOrDefaultAsync();
 
             if (result == null)
                 return 0.0f;
@@ -37,6 +37,14 @@ namespace MyFinances.API.Repositories
                 return;
             operation.Created = DateTime.Now;
             await _context.Operations.AddAsync(operation);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddCategory(Category category)
+        {
+            if (category == null)
+                return;
+            await _context.Categories.AddAsync(category);
             await _context.SaveChangesAsync();
         }
 
@@ -66,7 +74,7 @@ namespace MyFinances.API.Repositories
 
         private async Task<List<Operation>> GetUserOperations(Guid userId, int month, int year)
         {
-            List<Operation> operations = await _context.Operations.Where(o => o.User.Id == userId && o.Created.Month == month && o.Created.Year == year).ToListAsync();
+            List<Operation> operations = await _context.Operations.Where(o => o.User.Id == userId && o.DateOperation.Month == month && o.DateOperation.Year == year).ToListAsync();
             return operations;
         }
 
@@ -91,32 +99,37 @@ namespace MyFinances.API.Repositories
         {
             LastTenOperations lastTenOperations = new LastTenOperations();
 
-            lastTenOperations.Expenses = await _context.Operations.OrderByDescending(i => i.Created).Where(o => o.User.Id == UserId && o.Price < 0).Take(10).ToListAsync();
-            lastTenOperations.Income = await _context.Operations.OrderByDescending(i => i.Created).Where(o => o.User.Id == UserId && o.Price > 0).Take(10).ToListAsync();
-
+            lastTenOperations.Expenses = await _context.Operations.OrderByDescending(i => i.Created).Include(x => x.Category).Where(o => o.User.Id == UserId && o.Price < 0).Take(10).ToListAsync();
+            lastTenOperations.Income = await _context.Operations.OrderByDescending(i => i.Created).Include(x => x.Category).Where(o => o.User.Id == UserId && o.Price > 0).Take(10).ToListAsync();
 
             return lastTenOperations;
         }
 
+        public async Task<bool> DeleteOperation(Guid userId, Guid operationId)
+        {
+            Operation operation = _context.Operations.FirstOrDefault(x => x.Id == operationId && x.User.Id == userId);
+            if (operation == null)
+                throw new Exception("Brak operacji");
+
+            _context.Remove(operation);
+            
+            return await _context.SaveChangesAsync() > 0;
+        }
+
         public async Task<Statistic> GetStatistic(Guid userId)
         {
-            DateTime today = DateTime.Now; 
+            DateTime today = DateTime.Now;
             Statistic statistic = new Statistic();
-            List<float> expanses = new List<float>();
-            List<float> income = new List<float>();
-            List<string> dates = new List<string>();
-            for(int x = 0; x < 6; x++)
+
+            for (int x = 0; x < 6; x++)
             {
                 MonthSaldo saldo = await GetMonthSaldo(userId, today.Month, today.Year);
-                expanses.Add(Math.Abs(saldo.Expense));
-                income.Add(saldo.Income);
-                dates.Add(today.ToString("yyyy-MM"));
+                statistic.Expenses.Add(Math.Abs(saldo.Expense));
+                statistic.Income.Add(saldo.Income);
+                statistic.Date.Add(today.ToString("yyyy-MM"));
                 today = today.AddMonths(-1);
             }
-            statistic.Date = dates;
-            statistic.Income = income;
-            statistic.Expenses = expanses;
-            
+
             return statistic;
         }
     }

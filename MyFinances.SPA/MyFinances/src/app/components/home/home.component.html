@@ -68,134 +68,227 @@
       </div>
     </div>
   </div>
-
   <div class="container mt-5 noPadding">
     <div class="container-fluid noPadding">
 
       <div class="row mb-4 mt-5">
 
-        <div class="col-md-6 noPadding">
-          <div class="open-modal button-red pointer" data-toggle="modal"
-            data-backdrop="static" style="right: -1em" (click)="showModal(false)">
+        <div class="col-md-6 noPadding"  style="padding-right: 1.2em !important;">
+          <div class="open-modal button-red pointer" (click)="showModal(false)">
             <div class="plus">+</div>
           </div>
           <div class="section-mf container">
-            <div class="row  header-mf ">
+            <div class="row  header-mf ml-3">
               Wydatki
             </div>
-            <div class="row-price row" *ngFor="let item of lastTenOperations?.expenses; let i = index" >
-              <div class="number-operation text-danger">{{i + 1}}</div>
-              <div class="name-operation">{{item.categoryId | date : 'yyyy-MM-dd'}}</div>
-              <div class="name-operation  ml-2">{{item.name}}</div>
-              <div class="price-operation text-danger">{{item.price | number : '2.2-2' }} zł</div>
-
+            <div class="mf-item" *ngFor="let item of lastTenOperations?.expenses; let i = index">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="mf-number">
+                    <div class="number-operation text-danger">{{i + 1}}</div>
+                  </div>
+                  <span class="mf-item-title">{{item.name | titlecase}}</span>
+                  <div class="mf-sub-title">{{item.category.name}}</div>
+                </div>
+                <div class="col-md-3 mf-info">
+                  <div class="price-operation text-danger">{{item.price | number : '1.2-2' }} PLN</div>
+                  <div class="price-operation mf-sub-date">{{item.created | date: 'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="col-md-1 pointer" (click)="deleteOperation(item.id)"> <i class="fa fa-trash" aria-hidden="true"></i> </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6 right-col mt-1">
-          <div class="open-modal button-green pointer" (click)="showModal(true)">
+        <div class="col-md-6 noPadding" style="padding-left: 1.2em !important;">
+          <div class="open-modal button-green pointer" style="right: -1em" (click)="showModal(true)">
             <div class="plus">+</div>
           </div>
-          <div class="section-mf float-right container">
-            <div class="row header-mf">
+          <div class="section-mf container">
+            <div class="row ml-3 header-mf ">
               Przychody
             </div>
-            <div class="row-price  row" *ngFor="let item of lastTenOperations?.income; let i = index">
-              <div class="number-operation text-success">{{i + 1}}</div>
-              <div class="name-operation">{{item.created | date : 'yyyy-MM-dd'}}</div>
-              <div class="name-operation">{{item.name}}</div>
-              <div class="price-operation text-success">{{item.price | number : '2.2-2' }} zł</div>
-
+            <div class="mf-item" *ngFor="let item of lastTenOperations?.income; let i = index">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="mf-number">
+                    <div class="number-operation text-success">{{i + 1}}</div>
+                  </div>
+                  <span class="mf-item-title">{{item.name | titlecase}}</span>
+                  <div class="mf-sub-title">{{item.category.name}}</div>
+                </div>
+                <div class="col-md-3 mf-info">
+                  <div class="price-operation text-success">{{item.price | number : '1.2-2' }} PLN</div>
+                  <div class="price-operation mf-sub-date">{{item.created | date: 'dd/MM/yyyy'}}</div>
+                </div>
+                <div class="col-md-1 pointer" (click)="deleteOperation(item.id)"> <i class="fa fa-trash" aria-hidden="true"></i> </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-  </div>
 
 
-  <div class="container mt-5 noPadding">
-    <div class="container-fluid noPadding">
+    <div class="container mt-5 noPadding">
+      <div class="container-fluid noPadding">
 
-      <div class="container-mf">
-        <div class="row ">
-          <div>
-            <div style="position: relative; width: 70vw !important;">
-              <canvas baseChart
-                [datasets]="barChartData"
-                [labels]="barChartLabels"
-                [options]="barChartOptions"
-                [plugins]="barChartPlugins"
-                [legend]="barChartLegend"
-                [colors]="barChartColors"
-                [chartType]="barChartType">
+        <div class="container-mf noPadding">
+          <div class="row noPadding">
+            <div class="container-fluid " style="position: relative; width: 70vw !important;">
+              <canvas 
+              baseChart 
+              [datasets]="barChartData" 
+              [labels]="barChartLabels"
+              [options]="barChartOptions" [plugins]="barChartPlugins" [legend]="barChartLegend"
+              [colors]="barChartColors" [chartType]="barChartType">
               </canvas>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  
 
+    <div class="container mt-5">
+      <div class="container">
+        <div class="modal fade" id="modalAddOperations" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered" [ngClass]="(isExpanse)?'text-success':'text-danger'">
+            <div class="modal-content">
 
-  <div class="container mt-5">
-    <div class="container">
-      <div class="modal fade" id="modalAddOperations">
-        <div class="modal-dialog modal-dialog-centered"  [ngClass]="(isExpanse)?'text-success':'text-danger'">
-          <div class="modal-content">
-
-            <form [formGroup]="operationForm" (ngSubmit)="addOperations()">
-              <div class="modal-header center">
-                <h4 class="modal-title">Dodaj wydatek </h4>
-                <div class="open-modal  pointer"  [ngClass]="(isExpanse)?'button-green':'button-red'" data-dismiss="modal" style="right: -1em">
-                  <div class="plus">+</div>
-                </div>
-              </div>
-              <div class="modal-body">
-                <div class="container">
-                  <div class="row">
-                    <div class="form__group field">
-                      <input type="input" class="form__field" placeholder="Name" name="description" id='description'
-                        required autocomplete="off" formControlName="name" autocomplete="nope" [ngClass]="(isExpanse)?'text-success':'text-danger'" />
-                      <label for="name" class="form__label">Nazwa</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form__group field">
-                      <select class="form__field" formControlName="categoryId" name="categoryId" id='categoryId' [ngClass]="(isExpanse)?'text-success':'text-danger'"
-                        required>
-                        <option value="">Wybierz kategorie</option>
-                        <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
-                      </select>
-                      <label for="category" class="form__label">Kategoria:</label>
-                    </div>
-                  </div>
-
-                  <div class="row" [ngClass]="(isExpanse)?'text-success':'text-danger'" >
-                    <div class="form__group field" [ngClass]="(isExpanse)?'text-success':'text-danger'" >
-                      <dp-date-picker class="form__field" theme="dp-material" name="date" id='date'
-                        formControlName="date" [config]="config" [ngClass]="(isExpanse)?'text-success':'text-danger'" style="color: red!important;"></dp-date-picker>
-                      <label for="date" class="form__label">Data</label>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form__group field">
-                      <input type="input" type="number" class="form__field" [ngClass]="(isExpanse)?'text-success':'text-danger'" min="0.1" name="price" formControlName="price"
-                        step="0.1" pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off" />
-                      <label for="price" class="form__label">Kwota</label>
-                    </div>
+              <form [formGroup]="operationForm" (ngSubmit)="addOperations()">
+                <div class="modal-header center">
+                  <h4 class="modal-title">Dodaj operacje </h4>
+                  <div class="open-modal  pointer" [ngClass]="(isExpanse)?'button-green':'button-red'"
+                    data-dismiss="modal" style="right: -1em">
+                    <div class="plus">x</div>
                   </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit"  [ngClass]="(isExpanse)?'button-green':'button-red'" class="btn btn-secondary">dodaj</button>
-              </div>
-            </form>
+                <div class="modal-body"  [ngClass]="(isExpanse)?'text-success':'text-danger'">
+                  <div class="container">
+                    <div class="row">
+                      <div class="form__group field">
+                        <input type="input" class="form__field" placeholder="Name" name="description" id='description'
+                          required autocomplete="off" formControlName="name" autocomplete="nope"
+                          [ngClass]="(isExpanse)?'text-success':'text-danger'" />
+                        <label for="name" class="form__label">Nazwa</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form__group field">
+                        <select class="form__field" formControlName="categoryId" name="categoryId" id='categoryId'
+                          [ngClass]="(isExpanse)?'text-success':'text-danger'" required>
+                          <option value="">Wybierz kategorie</option>
+                          <option *ngFor="let category of categories" value="{{category.id}}">{{category.name | titlecase}}</option>
+                        </select>
+                        <label for="category" class="form__label">Kategoria:</label>
+                      </div>
+                    </div>
+
+                    <div class="row" [ngClass]="(isExpanse)?'text-success':'text-danger'">
+                      <div class="form__group field" [ngClass]="(isExpanse)?'text-success':'text-danger'">
+                        <dp-date-picker class="form__field" theme="dp-material" name="dateOperation" id='dateOperation'
+                          formControlName="dateOperation" [config]="config" [ngClass]="(isExpanse)?'text-success':'text-danger'"
+                          style="color: red!important;"></dp-date-picker>
+                        <label for="dateOperation" class="form__label">Data</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="form__group field">
+                        <input type="input" type="number" class="form__field"
+                          [ngClass]="(isExpanse)?'text-success':'text-danger'" min="0.1" name="price"
+                          formControlName="price" step="0.1" pattern="^\d+(?:\.\d{1,2})?$" autocomplete="off" />
+                        <label for="price" class="form__label">Kwota</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="row ">
+                    <button type="button"  (click)="showModalAddCategory()" [ngClass]="(isExpanse)?'button-green':'button-red'"
+                      class="btn btn-left btn-danger">Dodaj kategorie </button>
+                    
+                  <button type="submit" [ngClass]="(isExpanse)?'button-green':'button-red'"
+                  class="btn btn-danger btn-right">Dodaj</button>
+                 </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
-  </div>
+
+
+    <div class="container mt-5">
+      <div class="container">
+        <div class="modal fade" id="modalAddCategory" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered" [ngClass]="(isExpanse)?'text-success':'text-danger'">
+            <div class="modal-content">
+
+              <form [formGroup]="categoryForm" (ngSubmit)="addCategory()">
+                <div class="modal-header center">
+                  <h4 class="modal-title">Dodaj kategorie </h4>
+                  <div class="open-modal  pointer" (click)="closeModalAddCategory()" [ngClass]="(isExpanse)?'button-green':'button-red'"
+                    data-dismiss="modal" style="right: -1em">
+                    <div class="plus">x</div>
+                  </div>
+                </div>
+                <div class="modal-body">
+                  <div class="container">
+                    <div class="row">
+                      <div class="form__group field">
+                        <input type="input" class="form__field" placeholder="nameCategory" name="nameCategory" id='nameCategory'
+                          required autocomplete="off" formControlName="nameCategory" autocomplete="nope"
+                          [ngClass]="(isExpanse)?'text-success':'text-danger'" />
+                        <label for="nameCategory" class="form__label">Nazwa</label>
+                      </div>
+                    </div>
+                   </div>
+                   </div>
+                <div class="modal-footer">
+                  <div class="row">
+                  <button type="submit" [ngClass]="(isExpanse)?'button-green':'button-red'"
+                  class="btn btn-secondary">Dodaj</button>
+                 </div>
+                </div>
+                
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="container">
+        <div class="modal fade" id="summary" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered" [ngClass]="(isExpanse)?'text-success':'text-danger'">
+            <div class="modal-content">
+              <div class="open-modal  pointer" (click)="closeModalSummary()" [ngClass]="(isExpanse)?'button-green':'button-red'"
+              data-dismiss="modal" style="right: -1em">
+              <div class="plus">x</div>
+            </div>
+              <div class="summaryContent">
+                <div class="summaryHeader" [ngClass]="(isExpanse)?'success-mf':'danger-mf'">
+                  <div class="summaryTextHeader">DODANO
+                    
+                  <div class="summaryTextDesc">{{operationDesc}}</div>
+                  </div>
+                </div>
+                <div class="summaryHeader mt-1" [ngClass]="(isExpanse)?'success-mf':'danger-mf'">
+                  <div class="summaryTextHeader" style="font-size: 16px;">
+                    <ng-container *ngIf="!isExpanse">Łączna kwota wydatków {{months[today.getMonth()]}}: </ng-container>
+                    <ng-container *ngIf="isExpanse">Łączna kwota dochodów {{months[today.getMonth()]}}: </ng-container>
+                    <div class="summaryTextDesc" style="font-size: 24px !important;">{{summary | number : '1.2-2' }} PLN</div>
+                  </div>
+                  
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>

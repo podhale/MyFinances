@@ -9,6 +9,8 @@ namespace MyFinances.API.Helpers
         public AutoMapperProfile()
         {
             CreateMap<AddOperationDto, Operation>();
+            CreateMap<AddCategoryDto, Category>()
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.NameCategory));
         }
     }
 }

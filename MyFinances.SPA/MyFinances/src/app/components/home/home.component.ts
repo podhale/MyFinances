@@ -14,6 +14,7 @@ import { Color, Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { Statistic } from 'src/app/model/statistic';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { AddCategoryDto } from 'src/app/model/addCategoryDto';
 
 declare var $: any;
 
@@ -34,6 +35,9 @@ export class HomeComponent implements OnInit {
   isExpanse = true;
   lastTenOperations: LastTenOperations;
   operation: Operation;
+  operationDesc: string;
+  summary: number;
+
   monthSaldo: MonthSaldo;
   statistic: Statistic;
   today = new Date();
@@ -69,10 +73,13 @@ export class HomeComponent implements OnInit {
   operationForm = new FormGroup({
     name: new FormControl(''),
     categoryId: new FormControl(''),
-    date: new FormControl(this.datePipe.transform(this.today, 'yyyy-MM-dd')),
+    dateOperation: new FormControl(this.datePipe.transform(this.today, 'yyyy-MM-dd')),
     price: new FormControl(''),
   });
 
+  categoryForm = new FormGroup({
+    nameCategory: new FormControl('')
+  });
 
   constructor(private financesService: FinancesService,
               private authService: AuthService,
@@ -87,6 +94,15 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.getInfo();
+  }
+
+  resetForm(): void  {
+    this.operationForm.setValue({
+      name: '',
+      categoryId: '',
+      dateOperation: this.datePipe.transform(this.today, 'yyyy-MM-dd'),
+      price: 0.00,
+   });
   }
 
   getInfo(): void {
@@ -114,19 +130,35 @@ export class HomeComponent implements OnInit {
 
       this.financesService.addOperation(operation).then(() => {
         this.getInfo();
-        this.close();
+        this.resetForm();
+        this.closeModal();
+        this.operationDesc = operation.name + ', ' + parseFloat(operation.price.toString()).toFixed(2) + ' PLN';
+        this.summary = !this.isExpanse ? (this.monthSaldo?.expense + operation.price  * -1) : this.monthSaldo?.income + operation.price;
+        this.showModalSummary();
       });
     } else {
-      this.alertyfyService.error('Uzupełnij wszytskie pola!');
+      this.alertyfyService.error('Wypełnij poprawnie formularz!');
     }
 
   }
 
-  open(): void {
-    this.datePicker.api.open();
-  }
-  close(): void  {
-    this.datePicker.api.close();
+  addCategory(): void {
+
+    if (this.categoryForm.valid) {
+      let category = new AddCategoryDto();
+      category = this.categoryForm.value;
+      category.userId =  this.authService.getCurrentUserId();
+
+      this.financesService.addCategory(category).then(() => {
+        this.categoryForm.reset();
+        this.getInfo();
+        this.closeModalAddCategory();
+        this.alertyfyService.success('Kategoria: ' + category.nameCategory + ', została dodana');
+      });
+    } else {
+      this.alertyfyService.error('Wypełnij poprawnie formularz!');
+    }
+
   }
 
   getStatistic(): void {
@@ -137,15 +169,43 @@ export class HomeComponent implements OnInit {
     });
   }
 
+
+  public deleteOperation(operationId: string): void {
+    this.financesService.deleteOperation(this.authService.getCurrentUserId(), operationId).then(v => {
+      this.alertyfyService.success('Usunięto pomyślnie!');
+      this.getInfo();
+    }, error => {
+      this.alertyfyService.error('Wystąpił błąd podczas usuwania :( ');
+    });
+  }
+
   showModal(isExpanse: boolean): void {
 
     this.isExpanse = isExpanse;
     $('#modalAddOperations').modal('show');
   }
-  cloaseModal(): void {
-    $('#modalAddOperations').modal('close');
+  closeModal(): void {
+    $('#modalAddOperations').modal('hide');
   }
-  // events
+
+  showModalSummary(): void {
+    $('#summary').modal('show');
+  }
+  closeModalSummary(): void {
+    $('#summary').modal('hide');
+    this.operationDesc = '';
+    this.summary = 0;
+  }
+
+  showModalAddCategory(): void {
+    this.closeModal();
+    $('#modalAddCategory').modal('show');
+  }
+
+  closeModalAddCategory(): void {
+    $('#modalAddOperations').modal('show');
+    $('#modalAddCategory').modal('hide');
+  }
   public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
     console.log(event, active);
   }

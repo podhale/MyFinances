@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyFinances.API.Dto;
 using MyFinances.API.Interfaces;
 using MyFinances.API.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyFinances.API.Controllers
 {
@@ -52,7 +50,20 @@ namespace MyFinances.API.Controllers
             Operation operation = _mapper.Map<Operation>(operationDto);
             operation.User = await _authRepository.GetUser(new Guid(operationDto.UserId));
             operation.Category = await _financesRepository.GetCategory(new Guid(operationDto.UserId));
+
             await _financesRepository.AddOperation(operation);
+
+            return Ok();
+        }
+
+        [HttpPost("addCategory")]
+        public async Task<IActionResult> AddCategory([FromBody] AddCategoryDto categoryDto)
+        {
+            Category category = _mapper.Map<Category>(categoryDto);
+            category.User = await _authRepository.GetUser(categoryDto.UserId);
+
+            await _financesRepository.AddCategory(category);
+
             return Ok();
         }
 
@@ -72,6 +83,15 @@ namespace MyFinances.API.Controllers
         public async Task<List<Category>> GetCategories(Guid userId)
         {
             return await _financesRepository.GetCategories(userId);
+        }
+
+        [HttpDelete("deleteOperation")]
+        public async Task<IActionResult> DeleteOperation(Guid userId, Guid operationId)
+        {
+            bool isDelete =  await _financesRepository.DeleteOperation(userId, operationId);
+            if (isDelete) return NoContent(); 
+            
+            return BadRequest("Błąd! nie udało się usunąć operacji!");
         }
 
     }
